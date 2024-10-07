@@ -33,11 +33,18 @@ def getdata(name):
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path
-        user = path.split('?')[1]
-        data = getdata(user)
-        self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        self.wfile.write(json.dumps(data).encode('utf-8'))
+        if '?' in path:
+            user = path.split('?')[1]
+            data = getdata(user)
+            self.send_response(200)
+            self.send_header('Access - Control - Allow - Origin', '*')
+            self.send_header('Content - type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(data).encode('utf - 8'))
+        else:
+            # 这里可以根据需求返回错误信息或者默认数据
+            self.send_response(400)
+            self.send_header('Content - type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(b'Bad request: Missing query parameter')
         return
